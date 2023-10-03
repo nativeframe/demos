@@ -1,0 +1,1 @@
+export const backendEndpoint = 'https://your-backend-url.com'; // <-- replace with your endpoint
