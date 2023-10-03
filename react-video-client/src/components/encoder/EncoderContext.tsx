@@ -5,7 +5,7 @@ import {
   VideoClient,
   mediaController,
   types,
-} from '@livelyvideo/video-client-web';
+} from '@video/video-client-web';
 import React, { useEffect, useState } from 'react';
 import { tokenRefresher } from '../../utils/token-refresher';
 import { uuid } from '../../utils/uuid';

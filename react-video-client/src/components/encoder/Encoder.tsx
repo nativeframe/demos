@@ -12,7 +12,7 @@ import {
   ScreenCaptureButton,
   SettingsButton,
   SettingsSidebar,
-} from '@livelyvideo/video-client-web';
+} from '@video/video-client-web';
 import React from 'react';
 import { CallContextWrapper } from './CallContextWrapper';
 

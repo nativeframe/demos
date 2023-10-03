@@ -11,7 +11,7 @@ import {
   PlayerVideo,
   PlayerVolumeRange,
   PeerMutedBadge,
-} from "@livelyvideo/video-client-web";
+} from "@video/video-client-web";
 import React, { useContext, useEffect } from "react";
 
 // Player components used to view a broadcast

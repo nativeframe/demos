@@ -1,4 +1,4 @@
-import { types, PlayerUiState } from "@livelyvideo/video-client-web";
+import { types, PlayerUiState } from "@video/video-client-web";
 
 // Manages the list of the active players array
 export const playerReducer = (

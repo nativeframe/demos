@@ -3,7 +3,7 @@ import {
   types,
   CallContext,
   PlayerUiContext,
-} from "@livelyvideo/video-client-web";
+} from "@video/video-client-web";
 import React, { useEffect, useReducer, useState } from "react";
 import { tokenRefresher } from "../../utils/token-refresher";
 import { uuid } from "../../utils/uuid";
@@ -27,7 +27,7 @@ export const PlayerContext: React.FC<PlayerContextProps> = ({ callId, children }
     if (videoClient == null) {
       // If you do not have a backendEndpoint, contact a support representative to get one
       const videoClientOptions: types.VideoClientOptions = {
-        livelyEndpoints: [backendEndpoint],
+        backendEndpoints: [backendEndpoint],
         token: tokenRefresher({
           backendEndpoint,
           authUrl: `${backendEndpoint}/apps/demos/api/demo/v1/access-token`,

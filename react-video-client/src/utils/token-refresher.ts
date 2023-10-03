@@ -1,4 +1,4 @@
-import { TokenRequest, types } from "@livelyvideo/video-client-web";
+import { TokenRequest, types } from "@video/video-client-web";
 
 export interface tokenRefresherOptions {
   backendEndpoint: string;  // The backend endpoint provided by Lively

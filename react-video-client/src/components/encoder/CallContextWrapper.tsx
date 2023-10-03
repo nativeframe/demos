@@ -1,4 +1,4 @@
-import { CallContext, CallState } from "@livelyvideo/video-client-web";
+import { CallContext, CallState } from "@video/video-client-web";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface CallContextWrapperProps {
