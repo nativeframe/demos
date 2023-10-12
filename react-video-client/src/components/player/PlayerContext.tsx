@@ -1,14 +1,11 @@
 import {
-  VideoClient,
   types,
   CallContext,
   PlayerUiContext,
 } from "@video/video-client-web";
 import React, { useEffect, useReducer, useState } from "react";
-import { tokenRefresher } from "../../utils/token-refresher";
-import { uuid } from "../../utils/uuid";
-import { backendEndpoint } from "../../config/backend-endpoint";
 import { playerReducer } from "../../utils/player-reducer";
+import useVideoClient from "../../hooks/useVideoClient";
 
 interface PlayerContextProps {
   callId: string | null;
@@ -17,50 +14,17 @@ interface PlayerContextProps {
 
 // React Context instances that manage the VideoClient and PlayerUI instances
 export const PlayerContext: React.FC<PlayerContextProps> = ({ callId, children }) => {
-  const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(
-    null
-  );
   const [call, setCall] = useState<types.CallAPI | null>(null);
+  
+  // To track of the PlayerUI instances
   const [players, setPlayers] = useReducer(playerReducer, []);
-
-  useEffect(() => {
-    if (videoClient == null) {
-      // If you do not have a backendEndpoint, contact a support representative to get one
-      const videoClientOptions: types.VideoClientOptions = {
-        backendEndpoints: [backendEndpoint],
-        token: tokenRefresher({
-          backendEndpoint,
-          authUrl: `${backendEndpoint}/apps/demos/api/demo/v1/access-token`,
-          streamKey: uuid(),                // A unique identifier for the stream 
-          scope: "conference-participant",  // "conference-owner" | "conference-participant" however when direct streaming use "private-broadcaster" | "private-viewer"
-        }),
-        loggerConfig: {
-          clientName: "your-app-name",      // A human-readable name for identifying logs
-          writeLevel: "debug",
-        },
-      };
-
-      const newVC = new VideoClient(videoClientOptions);
-      newVC.on("playerAdded", (ev: any) => {
-        setPlayers({ type: "addPlayer", ev });
-      });
-      newVC.on("playerRemoved", (ev: any) => {
-        setPlayers({ type: "removePlayer", ev });
-      });
-
-      setVideoClient(newVC);
-    }
-    return () => {
-      if (videoClient != null) {
-        // @ts-ignore
-        setPlayers({ type: "unmount" });
-        videoClient.removeAllListeners("playerAdded");
-        videoClient.removeAllListeners("playerRemoved");
-        videoClient.dispose();
-        setVideoClient(null);
-      }
-    };
-  }, [videoClient]);
+  const events = {
+    "playerAdded": (ev: any) => setPlayers({ type: "addPlayer", ev }),
+    "playerRemoved": (ev: any) => setPlayers({ type: "removePlayer", ev })
+  };
+  
+  // Initialize the VideoClient instance
+  const videoClient = useVideoClient('conference-participant', events);
 
   useEffect(() => {
     if (callId && videoClient && call == null) {

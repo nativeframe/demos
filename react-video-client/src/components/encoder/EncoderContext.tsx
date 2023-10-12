@@ -2,7 +2,6 @@ import {
   EncoderUiState,
   EncoderUiContext,
   VideoClientContext,
-  VideoClient,
   mediaController,
   types,
 } from '@video/video-client-web';
@@ -11,6 +10,7 @@ import { tokenRefresher } from '../../utils/token-refresher';
 import { uuid } from '../../utils/uuid';
 import { backendEndpoint } from '../../config/backend-endpoint';
 import { CallContextWrapper } from './CallContextWrapper';
+import useVideoClient from '../../hooks/useVideoClient';
 
 interface EncoderContextProps {
   children: React.ReactNode;
@@ -18,35 +18,10 @@ interface EncoderContextProps {
 
 // React Context instances that manage the VideoClient and EncoderUI instances
 export const EncoderContext : React.FC<EncoderContextProps> = ({ children }) => {
-  const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(null);
   const [encoderUi, setEncoderUi] = useState<EncoderUiState | null>(null);
 
   // Initialize the VideoClient instance
-  useEffect(() => {
-    if (!videoClient) {
-      const videoClientOptions: types.VideoClientOptions = {
-        // If you do not have a backendEndpoint, contact a support representative to get one
-        backendEndpoints: [backendEndpoint], 
-        token: tokenRefresher({
-          backendEndpoint,
-          authUrl: `${backendEndpoint}/apps/demos/api/demo/v1/access-token`,
-          streamKey: uuid(),            // A unique identifier for the stream
-          scope: 'conference-owner',    // "conference-owner" | "conference-participant" however when direct streaming use "private-broadcaster" | "private-viewer"
-        }),
-        loggerConfig: {
-          clientName: 'your-app-name',  // A human-readable name for identifying logs
-          writeLevel: 'debug',
-        },
-      };
-      setVideoClient(new VideoClient(videoClientOptions));
-    }
-    return () => {
-      if (videoClient) {
-        videoClient.dispose();
-        setVideoClient(null);
-      }
-    };
-  }, [videoClient]);
+  const videoClient = useVideoClient('conference-owner', {});
 
   // Initialize the EncoderUi instance
   useEffect(() => {
