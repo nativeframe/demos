@@ -6,9 +6,6 @@ import {
   types,
 } from '@video/video-client-web';
 import React, { useEffect, useState } from 'react';
-import { tokenRefresher } from '../../utils/token-refresher';
-import { uuid } from '../../utils/uuid';
-import { backendEndpoint } from '../../config/backend-endpoint';
 import { CallContextWrapper } from './CallContextWrapper';
 import useVideoClient from '../../hooks/useVideoClient';
 
