@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="./javaScript/encoder.js"></script>
+    <script src="./javaScript/utils/token.js"></script>
+    <script src="./javaScript/utils/uuid.js"></script>
+    <script src="./javaScript/videoClientLib.js"></script>
+    <script>
+      window.onload = async function () {
+
+        const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
+
+        const tokenOptions = {
+          backendEndpoint: domain,
+          authUrl: `${domain}/apps/demos/api/demo/v1/access-token`,
+          streamKey: uuid(),
+          scope: "conference-owner",
+          clientReferrer: "demo",
+        };
+
+        const token = await tokenRefresher(tokenOptions);
+
+        const videoClientOptions = {
+          backendEndpoints: [domain],
+          token: token,
+        };
+
+        let vc = await new VideoClient.VideoClient(videoClientOptions);
+        await encoder(vc, VideoClient);
+      }
+    </script>
+    <div id="videoWrapper"></div>
+    <button id="videoButton">Video</button>
+    <button id="muteButton">Mute</button>
+    <button id="fullScreenButton">FullScreen</button>
+    <button id="broadcastButton">Broadcast</button>
+  </body>
+</html>
