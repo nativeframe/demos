@@ -15,20 +15,17 @@ async function fetchToken (authUrl, reqBody){
 };
 
 async function tokenRefresher(options){
-    const mirrors =
-        options.scope === "conference-owner"
-        ? [
+    const mirrors = [
             {
                 id: options.streamKey,
                 streamName: "demo",
-                kind: "rtmp",
+                kind: "pipe",
                 rtmpPath: `/origin_proxy/${options.streamKey}`,
                 clientEncoder: "demo",
                 streamKey: options.streamKey,
                 clientReferrer: options.clientReferrer !== undefined ? options.clientReferrer : null,
             },
             ]
-        : undefined;
 
     const url = `${options.authUrl}`;
     let token;

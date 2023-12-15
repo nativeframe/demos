@@ -57,7 +57,7 @@ async function encoder(vc, VideoClient) {
   //Click handler for creating the call and broadcasting/ending the broadcast/closing the call
   async function handleBroadcast() {
     //Options to be passed to the broadcast
-    let broadcastOptions = { streamName: "yourStreamName" };
+    let broadcastOptions = { streamName: "demo" };
     //Create the call
     let call = await vc.createCall({ userId: "yourUserId" });
     //If you are not broadcasting and the call exists
