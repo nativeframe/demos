@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="./javaScript/player.js"></script>
+    <script src="./javaScript/videoClientLib.js"></script>
+    <script>
+      function createVideoClient() {
+        // Needs to be swapped to be populated by env
+        const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
+
+        const manifestUrl = document.getElementById("manifest").value;
+
+        const videoClientOptions = {
+          backendEndpoints: [domain]
+        };
+
+        const vc = new VideoClient.VideoClient(videoClientOptions);
+        player(vc, player);
+
+          //Here we are ensuring the Create Video Element feature exists on the current VideoClient
+      if (
+        VideoClient.adapter.device.isImplements(
+          VideoClient.adapter.Feature.CREATE_VIDEO_ELEMENT
+        )
+      ) {
+        //Now we create our player and append it to or playerWrapper
+        const videoEl = VideoClient.adapter.device.createVideoElement();
+        videoEl.width = 400;
+        player.localAudioMuted = false;
+        player.attachTo(videoEl);
+        document.getElementById("playerWrapper").appendChild(videoEl);
+      }
+      }
+    </script>
+
+    <div id="playerWrapper"></div>
+    <button id="playerPlayButton">Play/Pause</button>
+    <button id="playerMuteButton">Mute</button>
+    <button id="playerFullScreenButton">FullScreen</button>
+    <br />
+    <label>Manifest Url: </label>
+    <form />
+    <input type="text" id="manifest" name="manifest" />
+    <button id="submit" onclick="return createVideoClient()">Submit</button>
+  </body>
+</html>
