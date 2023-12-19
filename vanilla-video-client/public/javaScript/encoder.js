@@ -13,8 +13,7 @@ async function encoder(vc, VideoClient) {
   mediaStreamController.audioMuted = false;
   mediaStreamController.videoPaused = false;
   mediaStreamController.audioDeviceId = null;
-  mediaStreamController.videoDeviceId =
-    VideoClient.mediaController.videoDevices()[0].deviceId;
+  mediaStreamController.videoDeviceId = VideoClient.mediaController.videoDevices()[0].deviceId;
 
   //Request your preview player from the VideoClient
   const preview = vc.requestPlayer(mediaStreamController);
@@ -41,11 +40,27 @@ async function encoder(vc, VideoClient) {
 
   // Click handler for hiding/showing the video
   function handleVideo() {
+    const video = document.getElementById("videoButton");
+    let text = video.textContent;
+    if(text === 'Stop Video'){
+      video.textContent = 'Start Video'
+    } else {
+      video.textContent = 'Stop Video'
+    }
+    video.classList.toggle('highlight');
     mediaStreamController.videoPaused =
       !mediaStreamController.videoPaused;
   }
   //Click handler for muting/unmuting the video
   function handleMute() {
+    const mute = document.getElementById("muteButton");
+    let text = mute.textContent;
+    if(text === 'Mute'){
+      mute.textContent = 'Unmute'
+    } else {
+      mute.textContent = 'Mute'
+    }
+    mute.classList.toggle('highlight');
     mediaStreamController.audioMuted = !mediaStreamController.audioMuted;
   }
   //Click handler for entering fullScreen mode.
@@ -56,6 +71,14 @@ async function encoder(vc, VideoClient) {
   let broadcasting = false;
   //Click handler for creating the call and broadcasting/ending the broadcast/closing the call
   async function handleBroadcast() {
+    const broadcast = document.getElementById("broadcastButton");
+    broadcast.classList.toggle('highlight');
+    let text = broadcast.textContent;
+    if(text === 'Start Broadcast'){
+      broadcast.textContent = 'End Broadcast'
+    } else {
+      broadcast.textContent = 'Start Broadcast'
+    }
     //Options to be passed to the broadcast
     let broadcastOptions = { streamName: "demo" };
     //Create the call

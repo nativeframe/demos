@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const concurrently = require('concurrently');
+const browserSync = require('browser-sync');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,26 +15,33 @@ app.get('/manifest', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'manifestPlayer.html'));
 });
 
+// Create a single instance of BrowserSync
+const bs = browserSync.create();
+
 // Start the server
 const server = app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 
-  // Open the main page (encoder.html) and the second page (manifest.html) in separate windows
-  concurrently([
-    { command: `open http://localhost:${port}/encoder.html`, name: 'main-window' },
-    { command: `open http://localhost:${port}/manifestPlayer.html`, name: 'second-window' }
-  ], {
-    killOthers: ['failure', 'success'],
-    prefix: 'none'
+  // Use browserSync for live-reloading and open tabs
+  bs.init({
+    proxy: `http://localhost:${port}`,
+    files: ['public/**/*.html', 'public/**/*.js', 'public/**/*.css'],
+    browser: 'google chrome', // Change this to your preferred browser
+    open: 'external',
+    startPath: 'encoder.html'
   });
+
+  // Delay the opening of the second tab
+  setTimeout(() => {
+    bs.reload('manifestPlayer.html');
+  }, 500); // Adjust the delay as needed
 });
 
-// Handle process termination (e.g., Ctrl+C) to close the opened windows
+// Handle process termination (e.g., Ctrl+C) to close the server
 process.on('SIGINT', () => {
-  console.log('Closing windows...');
+  console.log('Closing server...');
   server.close(() => {
     console.log('Server closed.');
     process.exit();
   });
 });
-

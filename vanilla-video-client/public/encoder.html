@@ -5,10 +5,16 @@
     <script src="./javaScript/utils/token.js"></script>
     <script src="./javaScript/utils/uuid.js"></script>
     <script src="./javaScript/videoClientLib.js"></script>
+    <style>
+      .highlight {
+        background-color: #007FFF;
+        color: #fff;
+      }
+    </style>
     <script>
       window.onload = async function () {
 
-        //Needs to be swapped to be populated by env
+        //Needs to be swapped to be po pulated by env
         const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
 
         const tokenOptions = {
@@ -31,9 +37,9 @@
       }
     </script>
     <div id="videoWrapper"></div>
-    <button id="videoButton">Video</button>
+    <button id="videoButton">Stop Video</button>
     <button id="muteButton">Mute</button>
     <button id="fullScreenButton">FullScreen</button>
-    <button id="broadcastButton">Broadcast</button>
+    <button id="broadcastButton">Start Broadcast</button>
   </body>
 </html>

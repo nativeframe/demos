@@ -1,40 +1,119 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <script src="./javaScript/player.js"></script>
     <script src="./javaScript/videoClientLib.js"></script>
-    <script>
-      function createVideoClient() {
-        // Needs to be swapped to be populated by env
-        const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
-
-        const manifestUrl = document.getElementById("manifest").value;
-
-        const videoClientOptions = {
-          backendEndpoints: [domain]
-        };
-
-        const vc = new VideoClient.VideoClient(videoClientOptions);
-        player(vc, player);
-
-          //Here we are ensuring the Create Video Element feature exists on the current VideoClient
-      if (
-        VideoClient.adapter.device.isImplements(
-          VideoClient.adapter.Feature.CREATE_VIDEO_ELEMENT
-        )
-      ) {
-        //Now we create our player and append it to or playerWrapper
-        const videoEl = VideoClient.adapter.device.createVideoElement();
-        videoEl.width = 400;
-        player.localAudioMuted = false;
-        player.attachTo(videoEl);
-        document.getElementById("playerWrapper").appendChild(videoEl);
+    <style>
+      .highlight {
+        background-color: #007FFF;
+        color: #fff;
       }
+    </style>
+    <script>
+      let playerVideo;
+      const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
+
+
+      //Click handler for playing/pausing the video
+      function handlePlayerPlay() {
+        //Ensure the player exists
+        if (playerVideo) {
+          const video = document.getElementById("playerPlayButton");
+          let text = video.textContent;
+          if(video.textContent === 'Pause'){
+            video.textContent = 'Play'
+          } else {
+            video.textContent = 'Pause'
+          }
+          video.classList.toggle('highlight');
+          playerVideo.localVideoPaused = !playerVideo.localVideoPaused;
+        }
+      }
+
+
+      //Click handler for muting/unmuting the video
+      function handlePlayerMute() {
+        //Ensure the playerVideo exists
+        if (playerVideo) {
+          const mute = document.getElementById("playerMuteButton");
+          mute.classList.toggle('highlight');
+          let text = mute.textContent;
+          if(text === 'Mute'){
+            mute.textContent = 'Unmute'
+          } else {
+            mute.textContent = 'Mute'
+          }
+          playerVideo.localAudioMuted = !playerVideo.localAudioMuted;
+        }
+      }
+
+
+      //Click handler for entering fullScreen mode
+      function handlePlayerFullScreen() {
+        //Ensure the player exists
+        if (playerVideo) {
+          document.getElementById("playerWrapper").requestFullscreen();
+        }
+      }
+
+
+      function addPlayer(player) {
+        //Here we are ensuring the Create Video Element feature exists on the current VideoClient
+        if (
+          VideoClient.adapter.device.isImplements(
+            VideoClient.adapter.Feature.CREATE_VIDEO_ELEMENT
+          )
+        ) {
+          //Now we create our player and append it to or playerWrapper
+          const videoEl = VideoClient.adapter.device.createVideoElement();
+          playerVideo = player;
+          videoEl.width = 400;
+          playerVideo.localAudioMuted = false;
+          player.attachTo(videoEl);
+          document.getElementById("playerWrapper").appendChild(videoEl);
+        }
+        //Event listeners to trigger our click handler functions when button elements are clicked
+        document
+          .getElementById("playerPlayButton")
+          .addEventListener("click", handlePlayerPlay, false);
+        document
+          .getElementById("playerMuteButton")
+          .addEventListener("click", handlePlayerMute, false);
+        document
+          .getElementById("playerFullScreenButton")
+          .addEventListener("click", handlePlayerFullScreen, false);
+      }
+
+
+      function createVideoClient() {
+        //Finally we can grab our manifest URL when this function is called.
+        const manifestUrl = document.getElementById("manifest").value;
+        //Here we are grabbing the streamKey at the end of our manifestURL
+        const streamKey = manifestUrl.slice(
+          manifestUrl.lastIndexOf("/") + 1,
+          manifestUrl.indexOf(".json")
+        );
+
+
+        const vc = new VideoClient.VideoClient({
+          backendEndpoints: [domain],
+        });
+        let player;
+        try {
+          player = vc.requestPlayer(manifestUrl);
+        } catch (err) {
+          throw err;
+        }
+
+
+        addPlayer(player);
+
+
+        return false;
       }
     </script>
 
     <div id="playerWrapper"></div>
-    <button id="playerPlayButton">Play/Pause</button>
+    <button id="playerPlayButton">Pause</button>
     <button id="playerMuteButton">Mute</button>
     <button id="playerFullScreenButton">FullScreen</button>
     <br />
