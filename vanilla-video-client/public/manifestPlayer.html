@@ -10,8 +10,7 @@
     </style>
     <script>
       let playerVideo;
-      const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
-
+      const domain = process.env.ENV_URL;
 
       //Click handler for playing/pausing the video
       function handlePlayerPlay() {

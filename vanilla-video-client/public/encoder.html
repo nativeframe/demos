@@ -5,6 +5,7 @@
     <script src="./javaScript/utils/token.js"></script>
     <script src="./javaScript/utils/uuid.js"></script>
     <script src="./javaScript/videoClientLib.js"></script>
+    <script src="./javaScript/utils/names.js"></script>
     <style>
       .highlight {
         background-color: #007FFF;
@@ -14,8 +15,9 @@
     <script>
       window.onload = async function () {
 
-        //Needs to be swapped to be po pulated by env
-        const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
+
+        //Will need to be converted to the env of the integrator 
+        const domain = 'https://umbrella.invertred-staging.devspace.lsea3.generflow.com';
 
         const tokenOptions = {
           backendEndpoint: domain,
@@ -25,16 +27,70 @@
           clientReferrer: "demo",
         };
 
-        const token = await tokenRefresher(tokenOptions);
+        const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
 
-        const videoClientOptions = {
-          backendEndpoints: [domain],
-          token: token,
+        let privateKey = '';
+
+        //Will need to be converted to the deployed service
+        await fetch(`http://localhost:3005/private-key?user=${user}`)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          privateKey = data.results.pvtKey;
+          console.log('Data:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error.message);
+        });
+
+        const data = {
+          scopes: ['broadcaster'],
+          userId: user,
+          data: {
+            displayName: user,
+            mirrors: [
+              {
+                id: privateKey,
+                streamName: 'demo',
+                kind: 'pipe',
+                clientEncoder: 'demo',
+                streamKey: privateKey,
+                clientReferrer: 'staging',
+              },
+            ],
+          },
         };
 
-        let vc = await new VideoClient.VideoClient(videoClientOptions);
-        await encoder(vc, VideoClient);
-      }
+        // Will need to be converted to the deployed service
+        await fetch('http://localhost:3005/auth-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          console.log('Data:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error.message);
+        });
+
+
+          const token = await tokenRefresher(tokenOptions);
+
+          const videoClientOptions = {
+            backendEndpoints: [domain],
+            token: token,
+          };
+
+          let vc = await new VideoClient.VideoClient(videoClientOptions);
+          await encoder(vc, VideoClient);
+        }
     </script>
     <div id="videoWrapper"></div>
     <button id="videoButton">Stop Video</button>

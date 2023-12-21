@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const browserSync = require('browser-sync');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
