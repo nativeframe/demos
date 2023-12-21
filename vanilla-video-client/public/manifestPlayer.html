@@ -28,7 +28,6 @@
         }
       }
 
-
       //Click handler for muting/unmuting the video
       function handlePlayerMute() {
         //Ensure the playerVideo exists
@@ -45,7 +44,6 @@
         }
       }
 
-
       //Click handler for entering fullScreen mode
       function handlePlayerFullScreen() {
         //Ensure the player exists
@@ -53,7 +51,6 @@
           document.getElementById("playerWrapper").requestFullscreen();
         }
       }
-
 
       function addPlayer(player) {
         //Here we are ensuring the Create Video Element feature exists on the current VideoClient
@@ -82,7 +79,6 @@
           .addEventListener("click", handlePlayerFullScreen, false);
       }
 
-
       function createVideoClient() {
         //Finally we can grab our manifest URL when this function is called.
         const manifestUrl = document.getElementById("manifest").value;
@@ -91,7 +87,6 @@
           manifestUrl.lastIndexOf("/") + 1,
           manifestUrl.indexOf(".json")
         );
-
 
         const vc = new VideoClient.VideoClient({
           backendEndpoints: [domain],
@@ -103,14 +98,11 @@
           throw err;
         }
 
-
         addPlayer(player);
-
 
         return false;
       }
     </script>
-
     <div id="playerWrapper"></div>
     <button id="playerPlayButton">Pause</button>
     <button id="playerMuteButton">Mute</button>

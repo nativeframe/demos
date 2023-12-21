@@ -14,18 +14,8 @@
     </style>
     <script>
       window.onload = async function () {
-
-
         //Will need to be converted to the env of the integrator 
         const domain = 'https://umbrella.invertred-staging.devspace.lsea3.generflow.com';
-
-        const tokenOptions = {
-          backendEndpoint: domain,
-          authUrl: `${domain}/apps/demos/api/demo/v1/access-token`,
-          streamKey: uuid(),
-          scope: "broadcaster",
-          clientReferrer: "demo",
-        };
 
         const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
 
@@ -44,53 +34,18 @@
           console.error('Error:', error.message);
         });
 
-        const data = {
-          scopes: ['broadcaster'],
-          userId: user,
-          data: {
-            displayName: user,
-            mirrors: [
-              {
-                id: privateKey,
-                streamName: 'demo',
-                kind: 'pipe',
-                clientEncoder: 'demo',
-                streamKey: privateKey,
-                clientReferrer: 'staging',
-              },
-            ],
-          },
+        const token = await tokenRefresher(user, privateKey);
+
+        
+        const videoClientOptions = {
+          backendEndpoints: [domain],
+          token: token,
         };
 
-        // Will need to be converted to the deployed service
-        await fetch('http://localhost:3005/auth-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          console.log('Data:', data);
-        })
-        .catch(error => {
-          console.error('Error:', error.message);
-        });
-
-
-          const token = await tokenRefresher(tokenOptions);
-
-          const videoClientOptions = {
-            backendEndpoints: [domain],
-            token: token,
-          };
-
-          let vc = await new VideoClient.VideoClient(videoClientOptions);
-          await encoder(vc, VideoClient);
-        }
+        let vc = await new VideoClient.VideoClient(videoClientOptions);
+        await encoder(vc, VideoClient);
+      
+      }
     </script>
     <div id="videoWrapper"></div>
     <button id="videoButton">Stop Video</button>
