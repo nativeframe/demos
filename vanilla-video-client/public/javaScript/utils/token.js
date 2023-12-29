@@ -1,5 +1,8 @@
 async function fetchToken(options) {
-    const response = await fetch('http://localhost:3005/auth-token', {
+    // ** REQUIRED **
+    // You must add your service endpoint here in order to use this demo.
+    // ** REQUIRED **
+    const response = await fetch('{Add your endpoint here}/auth-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -10,34 +13,40 @@ async function fetchToken(options) {
     return body.token;
 };
 
-async function tokenRefresher(user, privateKey){
-    let token;
-    const options = {
-        scopes: ['broadcaster'],
-        userId: 'admin',
-        data: {
-          displayName: user,
-          mirrors: [
-            {
-              id: privateKey,
-              streamName: 'demo',
-              kind: 'pipe',
-              clientEncoder: 'demo',
-              streamKey: privateKey,
-              clientReferrer: 'staging',
+
+// Functions as a Refresher for fetching our token
+async function tokenRefresher(user, privateKey) {
+    // You need to return a promise for this to work properly
+    return async () =>  {
+        let token;
+        // These options are setup for a broadcaster
+        const options = {
+            scopes: ['broadcaster'],
+            userId: 'admin',
+            data: {
+                displayName: user,
+                mirrors: [
+                    {
+                        id: privateKey,
+                        streamName: 'demo',
+                        kind: 'pipe',
+                        clientEncoder: 'demo',
+                        streamKey: privateKey,
+                        clientReferrer: 'staging',
+                    },
+                ],
             },
-          ],
-        },
-      };
-    try {
-        token = await fetchToken(options);
-    } catch (error) {
-        console.error("unable to get access token", {
-        error,
-        });
-        throw error;
+        };
+        try {
+            token = await fetchToken(options);
+        } catch (error) {
+            console.error("unable to get access token", {
+                error,
+            });
+            throw error;
+        }
+        return token;
     }
-    return token;
 };
 
 

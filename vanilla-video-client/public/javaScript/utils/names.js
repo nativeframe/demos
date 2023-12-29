@@ -5496,6 +5496,8 @@ const names = [
 	'Allyn',
 ];
 
+
+// Random name generator for the demo, all names should be unique.
 function getRandomName() {
 	return names[Math.floor(Math.random() * names.length)];
 };
