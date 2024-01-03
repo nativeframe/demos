@@ -14,14 +14,9 @@ import {
   SettingsSidebar,
 } from '@video/video-client-web';
 import React from 'react';
-import { CallContextWrapper } from './CallContextWrapper';
-
-interface EncoderProps {
-  setCallId: (id: string | null) => void;
-}
 
 // Encoder components used to create a broadcast and change encoder settings
-export const Encoder: React.FC<EncoderProps> = ({ setCallId }) => {
+export const Encoder: React.FC = () => {
   return (
     <div className="encoder">
         <MediaContainer>
@@ -30,8 +25,7 @@ export const Encoder: React.FC<EncoderProps> = ({ setCallId }) => {
             <CameraButton />
             <MicrophoneButton />
             <JoinBroadcastButton
-              setCallId={setCallId}
-              broadcastOptions={{ streamName: 'stream name' }}
+              broadcastOptions={{ streamName: 'Demo Stream' }}
             />
             <ScreenCaptureButton />
             <FullscreenButton />

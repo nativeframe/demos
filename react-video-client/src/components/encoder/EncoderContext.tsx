@@ -16,9 +16,21 @@ interface EncoderContextProps {
 // React Context instances that manage the VideoClient and EncoderUI instances
 export const EncoderContext : React.FC<EncoderContextProps> = ({ children }) => {
   const [encoderUi, setEncoderUi] = useState<EncoderUiState | null>(null);
+  const [vc, setVc] = useState<types.VideoClient | null>(null);
 
-  // Initialize the VideoClient instance
-  const videoClient = useVideoClient('conference-owner', {});
+
+
+  useEffect(() => {
+    console.log("!!--!! blach bla");
+    (async () => {
+      // Initialize the VideoClient instance
+      console.log("!!--!!")
+      const vcInstance = await useVideoClient('conference-owner', {})
+      console.log("!!--!!", vcInstance)
+      setVc(vcInstance);
+    })
+  }, [])
+
 
   // Initialize the EncoderUi instance
   useEffect(() => {
@@ -41,7 +53,8 @@ export const EncoderContext : React.FC<EncoderContextProps> = ({ children }) => 
   }, [encoderUi]);
 
   return (
-    <VideoClientContext.Provider value={videoClient}>
+    vc &&
+    <VideoClientContext.Provider value={vc}>
       <EncoderUiContext.Provider value={encoderUi}>
         <CallContextWrapper>
           {encoderUi != null && children}
