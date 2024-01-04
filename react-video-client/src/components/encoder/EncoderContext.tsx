@@ -8,8 +8,6 @@ import {
 } from '@video/video-client-web';
 import React, { useEffect, useState } from 'react';
 import { CallContextWrapper } from './CallContextWrapper';
-import { backendEndpoint } from '../../config/backend-endpoint';
-import { tokenRefresher } from '../../utils/token-refresher';
 import { getRandomName } from '../../utils/names';
 import useVideoClient from '../../hooks/useVideoClient';
 

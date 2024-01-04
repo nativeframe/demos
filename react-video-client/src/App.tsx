@@ -1,16 +1,20 @@
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Encoder } from './components/encoder/Encoder';
-import { EncoderContext } from './components/encoder/EncoderContext';
+import { Player } from './components/player/Player';
 
-function App() {
+const App = () => {
   return (
-    <div className='app'>
-      <EncoderContext>
-        <Encoder/>
-      </EncoderContext>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Encoder />} />
+      </Routes>
+      <Routes>
+        <Route path="/manifest" element={<Player />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

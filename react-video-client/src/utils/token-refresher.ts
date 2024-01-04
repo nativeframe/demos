@@ -28,7 +28,7 @@ export const tokenRefresher = (user: string, privateKey: string) => {
               mirrors: [
                   {
                       id: privateKey,
-                      streamName: 'demo',
+                      streamName: 'demo', // Make sure this name matches the name you are passing to the broadcastOptions or your stream will not appear.
                       kind: 'pipe',
                       clientEncoder: 'demo',
                       streamKey: privateKey,

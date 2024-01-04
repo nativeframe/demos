@@ -3,15 +3,22 @@ import { useState, useEffect } from 'react';
 import { backendEndpoint } from '../config/backend-endpoint';
 import { tokenRefresher } from '../utils/token-refresher';
 
-const useVideoClient = (scope: string, privateKey: string | null, user: string | null) => {
+const useVideoClient = (scope: string, privateKey?: string | null, user?: string | null) => {
   const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(null);
 
   useEffect(() => {
-    if (!videoClient && privateKey && user) {
+    if (!videoClient) {
+      let token;
+
+      // Only broadcasters need a token refresher
+      if (user && privateKey) {
+        token = tokenRefresher(user, privateKey);
+      }
+
       // If you do not have a backendEndpoint, contact a support representative to get one
       const videoClientOptions: types.VideoClientOptions = {
         backendEndpoints: [backendEndpoint],
-        token: tokenRefresher(user, privateKey),
+        token: token
       };
       const newVC = new VideoClient(videoClientOptions);
       
