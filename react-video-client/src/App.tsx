@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Encoder } from './components/encoder/Encoder';
-import { Player } from './components/player/Player';
+import { ManifestPlayer } from './components/player/ManifestPlayer';
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
         <Route path="/" element={<Encoder />} />
       </Routes>
       <Routes>
-        <Route path="/manifest" element={<Player />} />
+        <Route path="/manifest" element={<ManifestPlayer />} />
       </Routes>
     </Router>
   );

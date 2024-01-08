@@ -3,7 +3,7 @@ interface tokenOptions {
   userId: string;
   data: {
       displayName: string;
-      mirrors: {
+      mirrors?: {
           id: string;
           streamName: string;
           kind: string;

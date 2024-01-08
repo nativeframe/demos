@@ -28,7 +28,6 @@ export const Player = () => {
         <PlayerVolumeRange />
         <PlayerBitrateButton />
         <PlayerFullscreenButton />
-        <PlayerNewWindowButton />
       </ControlBar>
       <PlayerOverlayButton />
     </MediaContainer>
