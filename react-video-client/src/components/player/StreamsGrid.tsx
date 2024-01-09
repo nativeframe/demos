@@ -32,7 +32,6 @@ export const StreamsGrid: React.FC<props> = ({ selectStream } ) => {
         // Store the results for the streams.
         setStreams(data.results)
 
-        console.log("Data", data.results)
       } catch (error) {
         console.error('Fetch error:', error);
       }
@@ -41,13 +40,21 @@ export const StreamsGrid: React.FC<props> = ({ selectStream } ) => {
   return (
     <div>
         <button onClick={handleButtonClick}>Fetch Streams</button>
+        <br/>
+        <br/>
         <table>
             <tbody>
-            {streams.map((stream, index) => (
-              <tr style={{cursor: "pointer"}} key={index} onClick={() => selectStream(stream)}>
-                <td>Stream userId: {stream?.userId}</td> 
-              </tr>
-            ))}
+            {streams.length >= 1 ?
+                streams.map((stream, index) => (
+                <tr style={{cursor: "pointer"}} key={index} onClick={() => selectStream(stream)}>
+                    <td>Stream userId: {stream?.userId}</td> 
+                </tr>
+            ))
+            :
+                <div>
+                    No Streams Available, please click the Fetch Streams button to refresh
+                </div>
+        }
             </tbody>
         </table>
     </div>

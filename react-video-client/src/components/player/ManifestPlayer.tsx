@@ -3,7 +3,6 @@ import {
   PlayerUiState,
   PlayerUiContext,
   types,
-  VideoClient,
 } from "@video/video-client-web";
 import { Player } from "./Player";
 import useVideoClient from "../../hooks/useVideoClient";
@@ -13,6 +12,7 @@ import { fetchToken } from "../../utils/token-refresher";
 export const ManifestPlayer = () => {
   const [manifestUrl, setManifestUrl] = useState<string>('');
   const [playerUi, setPlayerUi] = useState<PlayerUiState | null>(null);
+  const [token, setToken] = useState<string>('');
 
   const selectStream = (stream: streamType): void => {
     setManifestUrl(stream.manifest)
@@ -40,33 +40,32 @@ export const ManifestPlayer = () => {
       };
       // Create our token using our fetchToken helper function.
     const token = await fetchToken(tokenOptions);
+    setToken(token);
     manifest = manifest + "=" + token;
     return manifest;
   };
 
   useEffect(() => {
-    if (videoClient != null && playerUi == null && manifestUrl != '') {
-      console.log("!!--!! here")
+    if (videoClient != null && playerUi == null && manifestUrl != '' && token != '') {
+      const options: Partial<types.PlayerOptions> = {};
+      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, options);
+      setPlayerUi(new PlayerUiState(player));
+    } else if (manifestUrl != '' && token == '') {
       const fetchDataAndUpdateState = async () => {
         setManifestUrl(await fetchData());
       };
   
-      fetchDataAndUpdateState(); // Call the async function
-
-      console.log("!!--!!", manifestUrl)
-
-      const options: Partial<types.PlayerOptions> = {};
-      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, options);
-      setPlayerUi(new PlayerUiState(player));
+      fetchDataAndUpdateState(); 
     }
     return () => {
       setManifestUrl('');
+      setToken('');
       if (playerUi != null) {
         playerUi.dispose();
         setPlayerUi(null);
       }
     };
-  }, [videoClient, playerUi, manifestUrl]);
+  }, [videoClient, playerUi, manifestUrl, token]);
 
 
   return (
