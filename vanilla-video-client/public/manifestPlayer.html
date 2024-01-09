@@ -2,124 +2,102 @@
 <html>
   <body>
     <script src="./javaScript/videoClientLib.js"></script>
+    <script src="./javaScript/utils/token.js"></script>
+    <script src="./javaScript/manifestPlayer.js"></script>
     <style>
       .highlight {
         background-color: #007FFF;
         color: #fff;
       }
     </style>
-    <script>
-      let playerVideo;
-      const domain = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com";
+    <div id="container">
+      <p>Click the button below to see the list of available streams</p>
+      <button id="viewStreams">ViewStreams</button>
+      <p>Once the streams are shown below clicking one will add it to the manifest player (If you receive a 404 your manifest may not be ready yet, please give it some time to poll the manifest again and play it).</p>
+      <div id="streamsList"></div>
+    </div>
 
-
-      //Click handler for playing/pausing the video
-      function handlePlayerPlay() {
-        //Ensure the player exists
-        if (playerVideo) {
-          const video = document.getElementById("playerPlayButton");
-          let text = video.textContent;
-          if(video.textContent === 'Pause'){
-            video.textContent = 'Play'
-          } else {
-            video.textContent = 'Pause'
-          }
-          video.classList.toggle('highlight');
-          playerVideo.localVideoPaused = !playerVideo.localVideoPaused;
-        }
-      }
-
-
-      //Click handler for muting/unmuting the video
-      function handlePlayerMute() {
-        //Ensure the playerVideo exists
-        if (playerVideo) {
-          const mute = document.getElementById("playerMuteButton");
-          mute.classList.toggle('highlight');
-          let text = mute.textContent;
-          if(text === 'Mute'){
-            mute.textContent = 'Unmute'
-          } else {
-            mute.textContent = 'Mute'
-          }
-          playerVideo.localAudioMuted = !playerVideo.localAudioMuted;
-        }
-      }
-
-
-      //Click handler for entering fullScreen mode
-      function handlePlayerFullScreen() {
-        //Ensure the player exists
-        if (playerVideo) {
-          document.getElementById("playerWrapper").requestFullscreen();
-        }
-      }
-
-
-      function addPlayer(player) {
-        //Here we are ensuring the Create Video Element feature exists on the current VideoClient
-        if (
-          VideoClient.adapter.device.isImplements(
-            VideoClient.adapter.Feature.CREATE_VIDEO_ELEMENT
-          )
-        ) {
-          //Now we create our player and append it to or playerWrapper
-          const videoEl = VideoClient.adapter.device.createVideoElement();
-          playerVideo = player;
-          videoEl.width = 400;
-          playerVideo.localAudioMuted = false;
-          player.attachTo(videoEl);
-          document.getElementById("playerWrapper").appendChild(videoEl);
-        }
-        //Event listeners to trigger our click handler functions when button elements are clicked
-        document
-          .getElementById("playerPlayButton")
-          .addEventListener("click", handlePlayerPlay, false);
-        document
-          .getElementById("playerMuteButton")
-          .addEventListener("click", handlePlayerMute, false);
-        document
-          .getElementById("playerFullScreenButton")
-          .addEventListener("click", handlePlayerFullScreen, false);
-      }
-
-
-      function createVideoClient() {
-        //Finally we can grab our manifest URL when this function is called.
-        const manifestUrl = document.getElementById("manifest").value;
-        //Here we are grabbing the streamKey at the end of our manifestURL
-        const streamKey = manifestUrl.slice(
-          manifestUrl.lastIndexOf("/") + 1,
-          manifestUrl.indexOf(".json")
-        );
-
-
-        const vc = new VideoClient.VideoClient({
-          backendEndpoints: [domain],
-        });
-        let player;
-        try {
-          player = vc.requestPlayer(manifestUrl);
-        } catch (err) {
-          throw err;
-        }
-
-
-        addPlayer(player);
-
-
-        return false;
-      }
-    </script>
-
-    <div id="playerWrapper"></div>
-    <button id="playerPlayButton">Pause</button>
-    <button id="playerMuteButton">Mute</button>
-    <button id="playerFullScreenButton">FullScreen</button>
-    <br />
-    <label>Manifest Url: </label>
-    <form />
-    <input type="text" id="manifest" name="manifest" />
-    <button id="submit" onclick="return createVideoClient()">Submit</button>
   </body>
+
+  <script>
+    // Holds the data returned to us from our live-streams endpoint.
+    let streamResults = [];
+  
+    document.getElementById("viewStreams").addEventListener("click", function (event) {
+      event.preventDefault();
+      getStreams();
+    });
+  
+    // Function that calls our live-streams endpoint to get all streams from one environment.
+    async function getStreams() {
+      try {
+        // ** REQUIRED **
+        // You must add your service endpoint here in order to use this demo.
+        // ** REQUIRED **
+        const response = await fetch('{Add your endpoint here}/live-streams');
+        const data = await response.json();
+
+        // Store the results for the streams.
+        streamResults = data;
+
+        // We are using this function to display all of our streams and make them clickable.
+        await displayResults();
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    }
+  
+    // Function that displays our streams and begins playing them in our manifestPlayer when clicked.
+    async function displayResults() {
+      const streamsList = document.getElementById("streamsList");
+  
+      // Clear previous results.
+      streamsList.innerHTML = "";
+
+      // If we don't have any available streams don't show anything.
+      if(streamResults.results == []){
+        const stream = document.createElement("p");
+        stream.textContent = "No Available Streams";
+        streamsList.appendChild(stream);
+      }
+  
+      // For each stream that we do have we add it to our list and add a click event on it.
+      streamResults.results.forEach((result, index) => {
+        const stream = document.createElement("div");
+        stream.textContent = `Stream ${index + 1}: ${result.userId}`;
+        stream.style.cursor = "pointer";
+        // On click we are taking the selected stream and playing it with our Manifest Player.
+        stream.addEventListener("click", async () => {
+          // We need to remove the old token provided
+          let manifest = result.manifest.split('=')[0];
+        
+          // Now we are grabbing our streamkey so we can use it in our token request.
+          let streamKey = manifest.split('/');
+
+          streamKey = streamKey[streamKey.length - 1];
+
+          streamKey = streamKey.slice(0, streamKey.lastIndexOf('.'));
+
+          // Options for our token request.
+          const tokenOptions = {
+            scopes: ['private-viewer'], // Scope for viewers.
+            userId: 'viewer', // Replace this with your userId.
+            ttl: 1800, // How long the token lasts, this would be 30 minutes.
+            data:{
+              displayName:"viewer", // Replace with your displayName.
+              streamKey, // The streamKey we extracted from the manifestUrl above.
+            }
+          };
+          // Create our token using our fetchToken helper function.
+          const token = await fetchToken(tokenOptions);
+
+          manifest = manifest + "=" + token;
+
+          // Now that we have our token we pass the manifest url with a valid token to our VideoClient instance to create our player.
+          createVideoClient(manifest, VideoClient) 
+        });
+        streamsList.appendChild(stream);
+      });
+    }
+  </script>
 </html>

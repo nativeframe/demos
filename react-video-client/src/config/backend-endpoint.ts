@@ -1,1 +1,1 @@
-export const backendEndpoint = 'https://your-backend-url.com'; // <-- replace with your endpoint
+export const backendEndpoint = 'https://invertred-staging.devspace.lsea3.generflow.com'; // <-- replace with your endpoint

@@ -1,51 +1,53 @@
-async function fetchToken (authUrl, reqBody){
-    const response = await window.fetch(authUrl, {
-        method: "post",
+async function fetchToken(options) {
+    // ** REQUIRED **
+    // You must add your service endpoint here in order to use this demo.
+    // ** REQUIRED **
+    const response = await fetch('{Add your endpoint here}/auth-token', {
+        method: 'POST',
         headers: {
-        "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(reqBody),
-    });
-    if (response.status !== 200) {
-        throw new Error("Unable to get token");
-    }
-
+        body: JSON.stringify(options),
+    })
     const body = await response.json();
     return body.token;
 };
 
-async function tokenRefresher(options){
-    const mirrors = [
-            {
-                id: options.streamKey,
-                streamName: "demo",
-                kind: "pipe",
-                rtmpPath: `/origin_proxy/${options.streamKey}`,
-                clientEncoder: "demo",
-                streamKey: options.streamKey,
-                clientReferrer: options.clientReferrer !== undefined ? options.clientReferrer : null,
-            },
-            ]
 
-    const url = `${options.authUrl}`;
-    let token;
-    try {
-        const fetchOptions = {
-            scopes: [options.scope],
-            userId: options.userId ?? options.streamKey,
+// Functions as a Refresher for fetching our token
+async function tokenRefresher(user, privateKey) {
+    // You need to return a promise for this to work properly
+    return async () =>  {
+        let token;
+        // These options are setup for a broadcaster
+        const options = {
+            scopes: ['broadcaster'],
+            userId: 'admin',
             data: {
-                displayName: options.displayName ?? options.streamKey,
-                mirrors,
+                displayName: user,
+                mirrors: [
+                    {
+                        id: privateKey,
+                        streamName: 'demo',
+                        kind: 'pipe',
+                        clientEncoder: 'demo',
+                        streamKey: privateKey,
+                        clientReferrer: 'staging',
+                    },
+                ],
             },
         };
-        token = await fetchToken(url, fetchOptions);
-    } catch (error) {
-        console.error("unable to get access token", {
-        error,
-        url,
-        });
-        throw error;
+        try {
+            token = await fetchToken(options);
+        } catch (error) {
+            console.error("unable to get access token", {
+                error,
+            });
+            throw error;
+        }
+        return token;
     }
-    return token;
 };
+
+
 
