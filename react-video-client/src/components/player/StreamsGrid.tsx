@@ -1,5 +1,6 @@
+// Component: StreamsGrid
+// About: This components main purpose is to grab all streams from your selected environment and populate them in a selectable grid.
 import React, { useState, useEffect } from 'react';
-
 
 export interface streamType {
     pubKey: string,
@@ -18,7 +19,8 @@ interface props {
 
 
 
-export const StreamsGrid: React.FC<props> = ({ selectStream } ) => {
+export const StreamsGrid: React.FC<props> = ({ selectStream }) => {
+// State to hold the list of available streams
   const [streams, setStreams] = useState<streamType[]>([]);
 
   const handleButtonClick = async () => {

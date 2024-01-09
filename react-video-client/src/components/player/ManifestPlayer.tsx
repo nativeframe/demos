@@ -1,3 +1,6 @@
+// Component: ManifestPlayer
+// About: This components main purpose is to create our manifestPlayer, it utilizes the player, StreamsGrid and the VideoClient hook in order to achieve this. 
+
 import React, { useEffect, useState } from "react";
 import {
   PlayerUiState,
@@ -10,25 +13,29 @@ import { streamType, StreamsGrid } from "./StreamsGrid";
 import { fetchToken } from "../../utils/token-refresher";
 
 export const ManifestPlayer = () => {
+  // Stores the set manifestUrl.
   const [manifestUrl, setManifestUrl] = useState<string>('');
+  // Stores the playerUi State.
   const [playerUi, setPlayerUi] = useState<PlayerUiState | null>(null);
+  // Stores the access token to view the stream.
   const [token, setToken] = useState<string>('');
 
+  // This is passed down to the child component StreamsGrid in order to allow you to select a stream.
   const selectStream = (stream: streamType): void => {
     setManifestUrl(stream.manifest)
   };
 
+  // Hook that sets up the videoClient, also used in the Encoder.
   const videoClient = useVideoClient('viewer');
 
-  const fetchData = async () => {
+  // Async function used to fetch our access token.
+  const handleFetchToken = async () => {        
+    // Grabbing our streamkey so we can use it in our token request.
     let manifest = manifestUrl.split('=')[0];
-        
-    // Now we are grabbing our streamkey so we can use it in our token request.
     let streamKey: string | string[] = manifest.split('/');
-
     streamKey = streamKey[streamKey.length - 1];
-
     streamKey = streamKey.slice(0, streamKey.lastIndexOf('.'));
+
       const tokenOptions = {
         scopes: ['private-viewer'], // Scope for viewers.
         userId: 'viewer', // Replace this with your userId.
@@ -38,28 +45,33 @@ export const ManifestPlayer = () => {
           streamKey, // The streamKey we extracted from the manifestUrl above.
         }
       };
-      // Create our token using our fetchToken helper function.
+    // Create our token using our handleFetchToken helper function.
     const token = await fetchToken(tokenOptions);
+    // Set it to state
     setToken(token);
     manifest = manifest + "=" + token;
-    return manifest;
+    setManifestUrl(manifest);
   };
 
   useEffect(() => {
+    // Check to make sure we have a videoClient, a manifestUrl and a token before we create our player
     if (videoClient != null && playerUi == null && manifestUrl != '' && token != '') {
-      const options: Partial<types.PlayerOptions> = {};
-      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, options);
+      
+      // The second argument is the options, for this example we will use the defaults.
+      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, {});
       setPlayerUi(new PlayerUiState(player));
+
+      // If we dont have a token but we have a manifest url we need to generate a token first,
     } else if (manifestUrl != '' && token == '') {
-      const fetchDataAndUpdateState = async () => {
-        setManifestUrl(await fetchData());
+      async () => {
+        await handleFetchToken();
       };
-  
-      fetchDataAndUpdateState(); 
     }
     return () => {
+      // Clear out our state on dismount or change
       setManifestUrl('');
       setToken('');
+      // Dispose of our player on dismount or change
       if (playerUi != null) {
         playerUi.dispose();
         setPlayerUi(null);

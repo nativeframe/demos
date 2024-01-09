@@ -1,9 +1,10 @@
+// Component: EncoderContext
+// About: This components main purpose is to create the context needed in order for our encoder to function, it utilizes our Encoder and VideoClient.
 import {
   EncoderUiState,
   EncoderUiContext,
   VideoClientContext,
   mediaController,
-  VideoClient,
   types,
 } from '@video/video-client-web';
 import React, { useEffect, useState } from 'react';
@@ -15,12 +16,16 @@ interface EncoderContextProps {
   children: React.ReactNode;
 }
 
-// React Context instances that manage the VideoClient and EncoderUI instances
-export const EncoderContext : React.FC<EncoderContextProps> = ({ children }) => {
+// React Context instances that manage the VideoClient and EncoderUI instances.
+export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
+  // State used to store the EncoderUiState.
   const [encoderUi, setEncoderUi] = useState<EncoderUiState | null>(null);
+  // State used to store the privateKey generated for our broadcaster.
   const [privateKey, setPrivateKey] = useState<string | null>(null);
+  // State used to store the name of our user.
   const [user, setUser] = useState<string | null>(null);
 
+  // Get the private key for our user on mount.
   useEffect(() => {
     getPrivKey();
   }, [])
@@ -29,10 +34,12 @@ export const EncoderContext : React.FC<EncoderContextProps> = ({ children }) => 
   useEffect(() => {
     if (encoderUi == null) {
       (async () => {
+        // First create your mediaController and mediaStreamController. In this example we will use the default options. 
         const mediaControllerOptions: types.MediaControllerOptions = {}
         await mediaController.init(mediaControllerOptions);
         const mediaRequestControllerOptions: Partial<types.MediaStreamControllerOptions> = {};
         const mediaStreamController = await mediaController.requestController(mediaRequestControllerOptions);
+        // Create our EncoderUiState now that we have our mediaStreamController.
         setEncoderUi(new EncoderUiState(mediaStreamController));
       })();
     }

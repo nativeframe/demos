@@ -1,14 +1,13 @@
-// in Player.tsx
+// Component: Player
+// About: This components main purpose is to import the VideoClient SDK components used in creation of the Player.
 import React, { useContext, useEffect } from "react";
 import {
   ControlBar,
-  PlayerUiContext,
   MediaContainer,
   PlayerAudioButton,
   PlayerBitrateButton,
   PlayerFullscreenButton,
   PlayerGetSoundButton,
-  PlayerNewWindowButton,
   PlayerOverlayButton,
   PlayerPlayButton,
   PlayerVideo,
@@ -16,7 +15,6 @@ import {
 } from "@video/video-client-web";
 
 export const Player = () => {
-  const playerCtx = useContext(PlayerUiContext);
 
   return (
     <MediaContainer>
