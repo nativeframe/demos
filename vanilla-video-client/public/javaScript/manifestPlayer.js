@@ -4,7 +4,7 @@ let vc = null;
 // ** REQUIRED **
 // You must add your backendEndpoint here in order to use this demo.
 // ** REQUIRED **
-const backendEndpoint = '';
+const backendEndpoint = '{your endpoint}';
 
 // Click handler for playing/pausing the video.
 function handlePlayerPlay() {

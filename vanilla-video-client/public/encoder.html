@@ -22,7 +22,7 @@
       // ** REQUIRED **
       // You must add your backendEndpoint here in order to use this demo.
       // ** REQUIRED **
-      const backendEndpoint = '';
+      const backendEndpoint = '{your endpoint}';
 
       // This is just grabbing a random name from our list, all displayNames and userIds should be unique.
       const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
@@ -33,7 +33,7 @@
       // You must add your service endpoint here in order to use this demo.
       // ** REQUIRED **
       // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`{add your endpoint here}/private-key?user=${user}`)
+      await fetch(`{your endpoint}/private-key?user=${user}`)
       .then(response => {
         return response.json();
       })

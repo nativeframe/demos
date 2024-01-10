@@ -63,9 +63,11 @@ export const ManifestPlayer = () => {
 
       // If we dont have a token but we have a manifest url we need to generate a token first,
     } else if (manifestUrl != '' && token == '') {
-      async () => {
+      const fetchDataAndUpdateState = async () => {
         await handleFetchToken();
       };
+  
+      fetchDataAndUpdateState(); 
     }
     return () => {
       // Clear out our state on dismount or change
