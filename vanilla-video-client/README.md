@@ -1,7 +1,3 @@
-# React Video Client
-
-React Video Client is a React application that demonstrates how to use the Video-Client library to encode and view video streams. It provides a simple boilerplate for using the Video-Client Encoder and Web Player components. The Encoder component allows you to select a camera and microphone, and then broadcast a stream. The Web Player component allows you to view the stream by joining a call using a call id provided by the Encoder.
-
 ### Prerequisites
 
 Before you begin, ensure you have the following:
