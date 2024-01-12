@@ -1,5 +1,6 @@
+// Component: StreamsGrid
+// About: This components main purpose is to grab all streams from your selected environment and populate them in a selectable grid.
 import React, { useState, useEffect } from 'react';
-
 
 export interface streamType {
     pubKey: string,
@@ -18,7 +19,8 @@ interface props {
 
 
 
-export const StreamsGrid: React.FC<props> = ({ selectStream } ) => {
+export const StreamsGrid: React.FC<props> = ({ selectStream }) => {
+// State to hold the list of available streams
   const [streams, setStreams] = useState<streamType[]>([]);
 
   const handleButtonClick = async () => {
@@ -26,7 +28,7 @@ export const StreamsGrid: React.FC<props> = ({ selectStream } ) => {
         // ** REQUIRED **
         // You must add your service endpoint here in order to use this demo.
         // ** REQUIRED **
-        const response = await fetch('http://localhost:3005/live-streams');
+        const response = await fetch('{Your Endpoint}/live-streams');
         const data = await response.json();
 
         // Store the results for the streams.

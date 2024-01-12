@@ -1,52 +1,46 @@
-# React Video Client
-
-React Video Client is a React application that demonstrates how to use the Video-Client library to encode and view video streams. It provides a simple boilerplate for using the Video-Client Encoder and Web Player components. The Encoder component allows you to select a camera and microphone, and then broadcast a stream. The Web Player component allows you to view the stream by joining a call using a call id provided by the Encoder.
-
-## Table of Contents
-
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-  - [Configuration](#configuration)
-  - [Running the App](#running-the-app)
-- [Contributing](#contributing)
-
-## Getting Started
-
 ### Prerequisites
 
 Before you begin, ensure you have the following:
 
 - [Node.js](https://nodejs.org/) installed (latest stable version recommended).
 - A 'Video-Client' backend endpoint URL for streaming. You will need to replace the placeholder URL in the configuration.
+- The ability to deploy a backend service or run one locally for testing purposes
 
-### Installation
-
+## Getting Started Backend Service
 1\. Install the project dependencies using npm:
 ```bash
 npm install
 ```
 
-## Usage
+2\. Next you will need to go to our concept API folder and configure it to work with your endpoints.
 
-### Configuration  
+3\. Because this is a backend service we can use dotenv in order to do so. You can use whichever method your prefer.
 
-Before running the app, you need to configure the backend endpoint:
-Open the src/config/backend-endpoint.ts file.
-Update the backendEndpoint const with your 'Video-Client' backend endpoint URL:
-```javascript
-export const backendEndpoint = 'https://your-backend-url.com';
-```
+4\. Go to the **.env** file and replace the token and environment url with your own.
 
-### Running the App
-Once you have configured the backend endpoint, you can start the React Video Client application using:
+5\. Once configured you will need to deploy your service to wherever you are capable of doing so.
+
+6\. It can be run by using:
 ```bash
 npm run start
 ```
 
-This will start the development server, and you can access the app in your web browser at http://localhost:3000.
+## Getting Started Video Client
+1\. Install the project dependencies using npm:
+```bash
+npm install
+```
 
-## Contributing
+2\. Next you will have to configure all backend and service endpoints to the application, the areas they are located are outlined below. For the backend enpoint you simply need to add it to a dotenv file using ENV_URL or you will need to change it in the code to a method you prefer.
+ - Service Endpoint Line 63: /src/components/encoder/EncoderContext.tsx
+ - Service Endpoint Line 31: /src/components/player/StreamsGrid.tsx
+ - Service Endpoint Line 56: /src/utils/token-refresher.ts
 
-We welcome contributions to improve the React Video Client. Feel free to open issues, submit pull requests, or provide feedback.
+ 3\. Now that we have the endpoints configured you can run the application:
+ ```bash
+npm run start
+```
+
+4\. Once running you will have both a manifest player and encoder up and running.
+    Manifest url: http://localhost:3000/manifest
+    Encoder url: http://localhost:3000/

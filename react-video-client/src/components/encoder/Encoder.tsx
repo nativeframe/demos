@@ -1,3 +1,5 @@
+// Component: Encoder
+// About: This components main purpose is to import the VideoClient SDK components used in creation of the Encoder.
 import {
   CameraButton,
   ControlBar,
@@ -16,7 +18,6 @@ import {
 import React from 'react';
 import { EncoderContext } from './EncoderContext';
 
-// Encoder components used to create a broadcast and change encoder settings
 export const Encoder: React.FC = () => {
   return (
     <EncoderContext>
