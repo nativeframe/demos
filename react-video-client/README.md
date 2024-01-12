@@ -6,41 +6,47 @@ Before you begin, ensure you have the following:
 - A 'Video-Client' backend endpoint URL for streaming. You will need to replace the placeholder URL in the configuration.
 - The ability to deploy a backend service or run one locally for testing purposes
 
-## Getting Started Backend Service
-1\. Install the project dependencies using npm:
+## Getting Started Backend Service (concept-api folder)
+
+The concept-api, or backend service, serves multiple purposes, for this demo it will show you how to handle requests to both our LSI and Foundation Auth APIs. To begin please follow the steps below, for demoing purposes this can be ran locally, for production purposes you will want to deploy this service.
+
+1\. The first step to getting the service running up and running is to configure your **.env** file. You will see two separate environment variables in this folder, **ENV_URL** and **TOKEN**. For **ENV_URL** you will want to add your backendendpoint to the environment you plan on streaming to, for **TOKEN** you will need to add the access token to the same enviornment you defined for **ENV_URL**. If you do not have access to either of these please reach out to support.
+
+2\. Next install the application dependencies using npm at the route of the application (concept-api folder):
 ```bash
 npm install
 ```
 
-2\. Next you will need to go to our concept API folder and configure it to work with your endpoints.
-
-3\. Because this is a backend service we can use dotenv in order to do so. You can use whichever method your prefer.
-
-4\. Go to the **.env** file and replace the token and environment url with your own.
-
-5\. Once configured you will need to deploy your service to wherever you are capable of doing so.
-
-6\. It can be run by using:
+3\. Finally if everything is configured properly you can begin the service using npm at the route of the application (concept-api folder): 
 ```bash
 npm run start
 ```
 
-## Getting Started Video Client
-1\. Install the project dependencies using npm:
-```bash
-npm install
-```
+## Getting Started Video Client (react-video-client folder)
+The react-video-client demo is the front end section of our demo using React. This demo connects to the Video Client core and web libraries in order to create our Encoder and Manifest player. This is a very basic level demo that is used to showcase the basic features of Video Client and how it functions, it is not designed for production purposes.
 
-2\. Next you will have to configure all backend and service endpoints to the application, the areas they are located are outlined below. For the backend enpoint you simply need to add it to a dotenv file using ENV_URL or you will need to change it in the code to a method you prefer.
+1\. To begin you will need to configure a few URLs within the application to connect to the backend service (concept-api) that you created above. If you are doing this locally the default URL for the concept-api is http://localhost:3005. If you have chosen to deploy the service the endpoint will be different.
  - Service Endpoint Line 63: /src/components/encoder/EncoderContext.tsx
  - Service Endpoint Line 31: /src/components/player/StreamsGrid.tsx
  - Service Endpoint Line 56: /src/utils/token-refresher.ts
 
- 3\. Now that we have the endpoints configured you can run the application:
- ```bash
+2\. Next you will need to create your **.env** file, you can either create a file or run the following in your terminal at the route of the application (react-video-client folder). 
+```bash
+touch .env
+```
+
+3\. Now add a new variable to the **.env** file **ENV_URL** and set this to the URL for the environment you would like to stream to, this should match the URL you set for your **ENV_URL** for the concept-api. 
+
+4\. Now the everything is configured install the application dependencies using npm at the route of the application (react-video-client folder):
+```bash
+npm install
+```
+
+5\. Finally the application is ready to be ran, start the application using npm at the route of the application (react-video-client folder):
+```bash
 npm run start
 ```
 
-4\. Once running you will have both a manifest player and encoder up and running.
-    Manifest url: http://localhost:3000/manifest
-    Encoder url: http://localhost:3000/
+6\. Once the application is up and running you will have both an Encoder and Manifest page that you can route to:
+  - Encoder URL: http://localhost:3000
+  - Manifest URL: http://localhost:3000/manifest
