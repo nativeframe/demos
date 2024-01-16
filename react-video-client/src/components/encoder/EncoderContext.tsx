@@ -67,14 +67,14 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
       .then(data => {
         // Store the private key
         setPrivateKey(data.results.pvtKey);
-        console.log("!!--!!", data.results.pvtKey)
       })
       .catch(error => {
         console.error('Error:', error.message);
       });
   }
 
- const videoClient = useVideoClient('owner', privateKey, user);
+  const videoClient = useVideoClient('owner', privateKey, user);
+
 
   return (
     videoClient &&

@@ -30,23 +30,19 @@ The react-video-client demo is the front end section of our demo using React. Th
  - Service Endpoint Line 31: /src/components/player/StreamsGrid.tsx
  - Service Endpoint Line 56: /src/utils/token-refresher.ts
 
-2\. Next you will need to create your **.env** file, you can either create a file or run the following in your terminal at the route of the application (react-video-client folder). 
-```bash
-touch .env
-```
+2\. Next you will need to configure the URLs for your **backendEndpoint**, this should be the same URL that you used for your **ENV_URL** in your service (concept-api).
+ - Backend Endpoint Line 21: react-video-client/src/hooks/useVideoClient.ts
 
-3\. Now add a new variable to the **.env** file **ENV_URL** and set this to the URL for the environment you would like to stream to, this should match the URL you set for your **ENV_URL** for the concept-api. 
-
-4\. Now the everything is configured install the application dependencies using npm at the route of the application (react-video-client folder):
+3\. Now the everything is configured install the application dependencies using npm at the route of the application (react-video-client folder):
 ```bash
 npm install
 ```
 
-5\. Finally the application is ready to be ran, start the application using npm at the route of the application (react-video-client folder):
+4\. Finally the application is ready to be ran, start the application using npm at the route of the application (react-video-client folder):
 ```bash
 npm run start
 ```
 
-6\. Once the application is up and running you will have both an Encoder and Manifest page that you can route to:
+5\. Once the application is up and running you will have both an Encoder and Manifest page that you can route to:
   - Encoder URL: http://localhost:3000
   - Manifest URL: http://localhost:3000/manifest

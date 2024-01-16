@@ -6,17 +6,19 @@ const useVideoClient = (scope: string, privateKey?: string | null, user?: string
   const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(null);
 
   useEffect(() => {
-    if (!videoClient && process.env.ENV_URL) {
+    if (!videoClient) {
       let token;
 
       // Only broadcasters need a token refresher
       if (user && privateKey) {
         token = tokenRefresher(user, privateKey);
       }
-
+      // ** REQUIRED **
+      // You must add your backendEndpoint here in order to use this demo.
+      // ** REQUIRED **
       // If you do not have a backendEndpoint, contact a support representative to get one
       const videoClientOptions: types.VideoClientOptions = {
-        backendEndpoints: [process.env.ENV_URL],
+        backendEndpoints: ['{Your Endpoint'],
         token: token
       };
       const newVC = new VideoClient(videoClientOptions);
