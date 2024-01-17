@@ -11,9 +11,8 @@
       }
     </style>
     <div id="container">
-      <p>Click the button below to see the list of available streams</p>
-      <button id="viewStreams">View Streams</button>
-      <p>Once the streams are shown below clicking one will add it to the manifest player (If you receive a 404 your manifest may not be ready yet, please give it some time to poll the manifest again and play it).</p>
+      <p>Please fetch your streams by clicking the button below and select one from the list below.</p>
+      <button id="viewStreams">Fetch Streams</button>
       <div id="streamsList"></div>
     </div>
 
@@ -57,7 +56,7 @@
       // If we don't have any available streams don't show anything.
       if(streamResults.results == []){
         const stream = document.createElement("p");
-        stream.textContent = "No Available Streams";
+        stream.textContent = "No Streams Available, please click the Fetch Streams button to refresh";
         streamsList.appendChild(stream);
       }
   
