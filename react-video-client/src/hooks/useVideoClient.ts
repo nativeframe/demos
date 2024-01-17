@@ -6,7 +6,7 @@ const useVideoClient = (scope: string, privateKey?: string | null, user?: string
   const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(null);
 
   useEffect(() => {
-    if (!videoClient && process.env.ENV_URL) {
+    if (!videoClient) {
       let token;
 
       // Only broadcasters need a token refresher
@@ -16,15 +16,15 @@ const useVideoClient = (scope: string, privateKey?: string | null, user?: string
 
       // If you do not have a backendEndpoint, contact a support representative to get one
       const videoClientOptions: types.VideoClientOptions = {
-        backendEndpoints: [process.env.ENV_URL],
+        backendEndpoints: ["https://invertred-staging.devspace.lsea3.generflow.com"],
         token: token
       };
       const newVC = new VideoClient(videoClientOptions);
-      
+
 
       setVideoClient(newVC);
     }
-    
+
     return () => {
       if (videoClient) {
         videoClient.dispose();

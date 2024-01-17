@@ -52,7 +52,7 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
     };
   }, [encoderUi]);
 
-  const getPrivKey = async() => {
+  const getPrivKey = async () => {
     // This is just grabbing a random name from our list, all displayNames and userIds should be unique.
     const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
     setUser(user);
@@ -60,8 +60,8 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
     // You must add your service endpoint here in order to use this demo.
     // ** REQUIRED **
     // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`{Your Endpoint}/private-key?user=${user}`)
-        .then(response => {
+    await fetch(`http://localhost:3005/private-key?user=${user}`)
+      .then(response => {
         return response.json();
       })
       .then(data => {
@@ -74,7 +74,7 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
       });
   }
 
- const videoClient = useVideoClient('owner', privateKey, user);
+  const videoClient = useVideoClient('owner', privateKey, user);
 
   return (
     videoClient &&

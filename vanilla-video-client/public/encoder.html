@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <script src="./javaScript/encoder.js"></script>
-    <script src="./javaScript/utils/token.js"></script>
-    <script src="./javaScript/videoClientLib.js"></script>
-    <script src="./javaScript/utils/names.js"></script>
-    <style>
-      .highlight {
-        background-color: #007FFF;
-        color: #fff;
-      }
-    </style>
-    <div id="videoWrapper"></div>
-    <button id="videoButton">Stop Video</button>
-    <button id="muteButton">Mute</button>
-    <button id="fullScreenButton">FullScreen</button>
-    <button id="broadcastButton">Start Broadcast</button>
-  </body>
-  <script>
-    window.onload = async function () {
-      // ** REQUIRED **
-      // You must add your backendEndpoint here in order to use this demo.
-      // ** REQUIRED **
-      const backendEndpoint = '{your endpoint}';
 
-      // This is just grabbing a random name from our list, all displayNames and userIds should be unique.
-      const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
+<body>
+  <script src="./javaScript/encoder.js"></script>
+  <script src="./javaScript/utils/token.js"></script>
+  <script src="./javaScript/videoClientLib.js"></script>
+  <script src="./javaScript/utils/names.js"></script>
+  <style>
+    .highlight {
+      background-color: #007FFF;
+      color: #fff;
+    }
+  </style>
+  <div id="videoWrapper"></div>
+  <button id="videoButton">Stop Video</button>
+  <button id="muteButton">Mute</button>
+  <button id="fullScreenButton">FullScreen</button>
+  <button id="broadcastButton">Start Broadcast</button>
+</body>
+<script>
+  window.onload = async function () {
+    // ** REQUIRED **
+    // You must add your backendEndpoint here in order to use this demo.
+    // ** REQUIRED **
+    const backendEndpoint = 'http://localhost:3005';
 
-      let privateKey = '';
+    // This is just grabbing a random name from our list, all displayNames and userIds should be unique.
+    const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
 
-      // ** REQUIRED **
-      // You must add your service endpoint here in order to use this demo.
-      // ** REQUIRED **
-      // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`{your endpoint}/private-key?user=${user}`)
+    let privateKey = '';
+
+    // ** REQUIRED **
+    // You must add your service endpoint here in order to use this demo.
+    // ** REQUIRED **
+    // Fetching our private key for the user we plan to broadcast with.
+    await fetch(`http://localhost:3005/private-key?user=${user}`)
       .then(response => {
         return response.json();
       })
@@ -45,19 +46,20 @@
         console.error('Error:', error.message);
       });
 
-      // Create our token refresh using the username and privateKey we just generated.
-      const token = await tokenRefresher(user, privateKey);
+    // Create our token refresh using the username and privateKey we just generated.
+    const token = await tokenRefresher(user, privateKey);
 
-      // Our video client options.
-      const videoClientOptions = {
-        backendEndpoints: [backendEndpoint],
-        token: token,
-      };
+    // Our video client options.
+    const videoClientOptions = {
+      backendEndpoints: [backendEndpoint],
+      token: token,
+    };
 
-      // Create our VideoClient instance with the options above and once created we can create our Encoder.
-      let vc = await new VideoClient.VideoClient(videoClientOptions);
-      await encoder(vc, VideoClient);
-    
-    }
-  </script>
+    // Create our VideoClient instance with the options above and once created we can create our Encoder.
+    let vc = await new VideoClient.VideoClient(videoClientOptions);
+    await encoder(vc, VideoClient);
+
+  }
+</script>
+
 </html>
