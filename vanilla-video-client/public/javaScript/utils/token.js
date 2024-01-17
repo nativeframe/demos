@@ -2,7 +2,7 @@ async function fetchToken(options) {
     // ** REQUIRED **
     // You must add your service endpoint here in order to use this demo.
     // ** REQUIRED **
-    const response = await fetch('{your endpoint}', {
+    const response = await fetch('{Your SERVICE Endpoint}/auth-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

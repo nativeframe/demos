@@ -28,7 +28,7 @@ export const StreamsGrid: React.FC<props> = ({ selectStream }) => {
         // ** REQUIRED **
         // You must add your service endpoint here in order to use this demo.
         // ** REQUIRED **
-        const response = await fetch('{Your Endpoint}/live-streams');
+        const response = await fetch('{Your SERVICE Endpoint}/live-streams');
         const data = await response.json();
 
         // Store the results for the streams.

@@ -60,7 +60,7 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
     // You must add your service endpoint here in order to use this demo.
     // ** REQUIRED **
     // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`{Your Endpoint}/private-key?user=${user}`)
+      await fetch(`{Your SERVICE Endpoint}/private-key?user=${user}`)
         .then(response => {
         return response.json();
       })

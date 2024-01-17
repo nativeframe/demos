@@ -18,7 +18,7 @@ const useVideoClient = (scope: string, privateKey?: string | null, user?: string
       // ** REQUIRED **
       // If you do not have a backendEndpoint, contact a support representative to get one
       const videoClientOptions: types.VideoClientOptions = {
-        backendEndpoints: ['{Your Endpoint'],
+        backendEndpoints: ['{Your BACKEND Endpoint}'],
         token: token
       };
       const newVC = new VideoClient(videoClientOptions);

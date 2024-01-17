@@ -53,7 +53,7 @@ export const fetchToken = async (options: tokenOptions) => {
   // ** REQUIRED **
   // You must add your service endpoint here in order to use this demo.
   // ** REQUIRED **
-  const response = await fetch('{Your Endpoint}/auth-token', {
+  const response = await fetch('{Your SERVICE Endpoint}/auth-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
