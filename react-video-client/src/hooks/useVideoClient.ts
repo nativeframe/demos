@@ -1,6 +1,7 @@
 import { VideoClient, types } from '@video/video-client-web';
 import { useState, useEffect } from 'react';
 import { tokenRefresher } from '../utils/token-refresher';
+import { backendEndpoint } from '../globalConfigs';
 
 const useVideoClient = (scope: string, privateKey?: string | null, user?: string | null) => {
   const [videoClient, setVideoClient] = useState<types.VideoClientAPI | null>(null);
@@ -13,12 +14,9 @@ const useVideoClient = (scope: string, privateKey?: string | null, user?: string
       if (user && privateKey) {
         token = tokenRefresher(user, privateKey);
       }
-      // ** REQUIRED **
-      // You must add your backendEndpoint here in order to use this demo.
-      // ** REQUIRED **
-      // If you do not have a backendEndpoint, contact a support representative to get one
+      // Setting the generated token and the backendEndpoint for the options to be passed to our new VideoClient instance
       const videoClientOptions: types.VideoClientOptions = {
-        backendEndpoints: ['{Your BACKEND Endpoint}'],
+        backendEndpoints: [backendEndpoint],
         token: token
       };
       const newVC = new VideoClient(videoClientOptions);

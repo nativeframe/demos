@@ -1,3 +1,6 @@
+// Utility: tokenRefresher
+// About: The main purpose of this utility is to create the token refresher necessary to create valid tokens for the Video Client. 
+import { serviceEndpoint } from "../globalConfigs";
 interface tokenOptions {
   scopes: string[];
   userId: string;
@@ -50,10 +53,7 @@ export const tokenRefresher = (user: string, privateKey: string) => {
 };
 
 export const fetchToken = async (options: tokenOptions) => {
-  // ** REQUIRED **
-  // You must add your service endpoint here in order to use this demo.
-  // ** REQUIRED **
-  const response = await fetch('{Your SERVICE Endpoint}/auth-token', {
+  const response = await fetch(`${serviceEndpoint}/auth-token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
