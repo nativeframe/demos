@@ -1,8 +1,8 @@
-async function fetchToken(options) {
+async function fetchToken(options, endpoint) {
     // ** REQUIRED **
     // You must add your service endpoint here in order to use this demo.
     // ** REQUIRED **
-    const response = await fetch(`${process.env.SERVICE_URL}/auth-token`, {
+    const response = await fetch(`${endpoint}/auth-token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ async function fetchToken(options) {
 
 
 // Functions as a Refresher for fetching our token
-async function tokenRefresher(user, privateKey) {
+async function tokenRefresher(user, privateKey, endpoint) {
     // You need to return a promise for this to work properly
     return async () =>  {
         let token;
@@ -38,7 +38,7 @@ async function tokenRefresher(user, privateKey) {
             },
         };
         try {
-            token = await fetchToken(options);
+            token = await fetchToken(options, endpoint);
         } catch (error) {
             console.error("unable to get access token", {
                 error,

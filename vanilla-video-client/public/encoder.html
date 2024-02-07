@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <script src="./javaScript/globalConfigs.js"></script>
     <script src="./javaScript/encoder.js"></script>
     <script src="./javaScript/utils/token.js"></script>
     <script src="./javaScript/videoClientLib.js"></script>
@@ -25,7 +26,7 @@
       let privateKey = '';
 
       // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`${process.env.SERVICE_URL}/private-key?user=${user}`)
+      await fetch(`${serviceEndpoint}/private-key?user=${user}`)
       .then(response => {
         return response.json();
       })
@@ -38,11 +39,11 @@
       });
 
       // Create our token refresh using the username and privateKey we just generated.
-      const token = await tokenRefresher(user, privateKey);
+      const token = await tokenRefresher(user, privateKey, serviceEndpoint);
 
       // Our video client options.
       const videoClientOptions = {
-        backendEndpoints: [process.env.BACKEND_ENDPOINT],
+        backendEndpoints: [backendEndpoint],
         token: token,
       };
 

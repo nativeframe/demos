@@ -105,11 +105,11 @@ function addPlayer(player) {
 }
 
 // Function to create our VideoClient instance and call to create our player.
-function createVideoClient(manifestUrl, VideoClient) {
+function createVideoClient(manifestUrl, VideoClient, endpoint) {
   // If we don't have a player yet we don't have a VideoClient instance and need to create one.
   if(playerVideo === null){
     vc = new VideoClient.VideoClient({
-    backendEndpoints: [process.env.BACKEND_ENDPOINT],
+    backendEndpoints: [endpoint],
   });
 
   // If we already have a player we need to dispose of the old one so we can replace it with a new one.

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <script src="./javaScript/globalConfigs.js"></script>
     <script src="./javaScript/videoClientLib.js"></script>
     <script src="./javaScript/utils/token.js"></script>
     <script src="./javaScript/manifestPlayer.js"></script>
@@ -33,7 +34,7 @@
         // ** REQUIRED **
         // You must add your service endpoint here in order to use this demo.
         // ** REQUIRED **
-        const response = await fetch(`${process.env.SERVICE_URL}/live-streams`);
+        const response = await fetch(`${serviceEndpoint}/live-streams`);
         const data = await response.json();
 
         // Store the results for the streams.
@@ -88,12 +89,12 @@
             }
           };
           // Create our token using our fetchToken helper function.
-          const token = await fetchToken(tokenOptions);
+          const token = await fetchToken(tokenOptions, serviceEndpoint);
 
           manifest = manifest + "=" + token;
 
           // Now that we have our token we pass the manifest url with a valid token to our VideoClient instance to create our player.
-          createVideoClient(manifest, VideoClient) 
+          createVideoClient(manifest, VideoClient, backendEndpoint) 
         });
         streamsList.appendChild(stream);
       });

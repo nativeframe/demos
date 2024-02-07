@@ -26,8 +26,8 @@ npm run start
 ## Video Client (vanilla-video-client folder)
 The vanilla-video-client demo is the front end section of our demo using Vanilla Javascript. This demo connects to the Video Client Core and Web libraries in order to create our Encoder and Manifest Player. This is a very basic level demo that is used to showcase the basic features of Video Client and how it functions. **This demo is not designed for production purposes**. Note that in the vanilla demo a bundle for the Video Client dependency is used, please refer to our docs if you need help creating new bundles. 
 
-1\. To begin you will need to configure your **backend endpoint** and your **service endpoint**, this needs to be done in the **.env** file found at **vanilla-video-client/.env**. The **service endpoint** is the endpoint you created in the backend service steps section above, if you have not completed the Backend Service section of this Readme or have your own service you intend to use please start there. The **backend endpoint** is the environment to which you would like to stream and play video from.
-![environment](./public/assets/environment.png "environment")
+1\. To begin you will need to configure your **backend endpoint** and your **service endpoint**, this needs to be done in the **globalConfig** file found at **vanilla-video-client/public/javaScript/globalConfigs.js**. The **service endpoint** is the endpoint you created in the backend service steps section above, if you have not completed the Backend Service section of this Readme or have your own service you intend to use please start there. The **backend endpoint** is the environment to which you would like to stream and play video from.
+![global config](./public/assets/globalconfig.png "global config")
 
 2\. Now the everything is configured install the application dependencies using npm at the root directory of the application (vanilla-video-client folder):
 ```bash
