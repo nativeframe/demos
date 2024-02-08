@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { CallContextWrapper } from './CallContextWrapper';
 import { getRandomName } from '../../utils/names';
 import useVideoClient from '../../hooks/useVideoClient';
+import { serviceEndpoint } from "../../globalConfigs";
 
 interface EncoderContextProps {
   children: React.ReactNode;
@@ -56,11 +57,8 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
     // This is just grabbing a random name from our list, all displayNames and userIds should be unique.
     const user = `demoUser${getRandomName()}${Math.floor(Math.random() * 10)}`;
     setUser(user);
-    // ** REQUIRED **
-    // You must add your service endpoint here in order to use this demo.
-    // ** REQUIRED **
     // Fetching our private key for the user we plan to broadcast with.
-      await fetch(`{Your SERVICE Endpoint}/private-key?user=${user}`)
+      await fetch(`${serviceEndpoint}/private-key?user=${user}`)
         .then(response => {
         return response.json();
       })

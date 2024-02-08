@@ -1,0 +1,2 @@
+export const backendEndpoint = "Your backend endpoint"; // The URL for the environment you plan to stream to.
+export const serviceEndpoint = "Your service endpoint"; // The URL for the service you run in the concept-api folder.
