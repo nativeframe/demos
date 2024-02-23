@@ -68,7 +68,7 @@
         stream.style.cursor = "pointer";
         // On click we are taking the selected stream and playing it with our Manifest Player.
         stream.addEventListener("click", async () => {
-          // We need to remove the old token provided
+          // We need to remove the old token provided.
           let manifest = result.manifest.split('=')[0];
         
           // Now we are grabbing our streamkey so we can use it in our token request.
