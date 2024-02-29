@@ -38,6 +38,10 @@ export const ViewersDisplay: React.FC<ViewersDisplayProps> = ({ callId }) => {
     return () => clearInterval(intervalId); // Cleanup on unmount or callId change
   }, [callId]);
 
+  if (!viewers.length) {
+    return null;
+  }
+
   return (
     <div>
       <h2>Viewers watching</h2>
