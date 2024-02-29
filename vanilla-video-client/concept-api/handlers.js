@@ -38,14 +38,15 @@ const getLiveStreams = async (req, res) => {
 // Function that hits our foundation auth in order to generate an auth token for broadcasters and viewers.
 const getAuthToken = async (req, res) => {
   // You will need to setup your environment variables or hardcode the values here.
-  const url = `${process.env.BACKEND_ENDPOINT}/auth/v1/access-tokens`;
+  let url = `${process.env.BACKEND_ENDPOINT}/auth/v1/access-tokens`;
   try {
-    const token = process.env.TOKEN;
+    // Update the url so that it is not behind keycloak and hits the foundation auth.
+    url = url.replace('umbrella.', "");
 
     const response = await axios.post(url, req.body, {
-      headers: {
+        headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${process.env.TOKEN}`,
       },
     });
 
@@ -57,7 +58,6 @@ const getAuthToken = async (req, res) => {
     res.end("Internal Server Error");
   }
 };
-
 // Handler to get list of viewers watching a broadcast
 const getViewersWatching = (req, res) => {
   // Accepts a callId as a query parameter

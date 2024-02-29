@@ -101,7 +101,9 @@ function addPlayer(player) {
 
     // Create our VideoElement using the Video Client and attach our player to it.
     const videoEl = VideoClient.adapter.device.createVideoElement();
-    videoEl.width = 400;
+    videoEl.style.objectFit = 'cover'
+    videoEl.style.height = "100%";
+    videoEl.style.width = "100%";
     player.attachTo(videoEl);
 
     // Finally we append our player to our playerWrapper.

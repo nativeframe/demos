@@ -28,7 +28,9 @@ async function encoder(vc, VideoClient) {
     // Create the video element using videoClient.
     video = VideoClient.adapter.device.createVideoElement();
     // Set a width for the video (this can be done separately if needed).
-    video.width = 400;
+    video.style.objectFit = 'cover'
+    video.style.height = "100%";
+    video.style.width = "100%";
     // Set the local previews audio to mute so you don't hear yourself.
     preview.localAudioMuted = true;
     // Attach the video to the videoElement.

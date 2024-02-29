@@ -40,7 +40,7 @@ const getAuthToken = async (req, res) => {
   // You will need to setup your environment variables or hardcode the values here.
   let url = `${process.env.BACKEND_ENDPOINT}/auth/v1/access-tokens`;
   try {
-    // Update the url so that it is not behind keycloak so that hits the foundation auth.
+    // Update the url so that it is not behind keycloak and hits the foundation auth.
     url = url.replace('umbrella.', "");
 
     const response = await axios.post(url, req.body, {
