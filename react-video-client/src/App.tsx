@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Encoder />} />
+        <Route path="/encoder" element={<Encoder />} />
       </Routes>
       <Routes>
         <Route path="/manifest" element={<ManifestPlayer />} />

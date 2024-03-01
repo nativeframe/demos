@@ -73,7 +73,6 @@ export const EncoderContext: React.FC<EncoderContextProps> = ({ children }) => {
 
   const videoClient = useVideoClient('owner', privateKey, user);
 
-
   return (
     videoClient &&
     <VideoClientContext.Provider value={videoClient}>
