@@ -11,9 +11,18 @@ async function encoder(vc, VideoClient) {
   // Calling methods/setting properties on the HTMLVideoElement itself will cause issues with the video.
   mediaStreamController.audioMuted = false;
   mediaStreamController.videoPaused = false;
-  mediaStreamController.audioDeviceId =  VideoClient.mediaController.audioDevices()[0].deviceId;
-  mediaStreamController.videoDeviceId =
+  if (VideoClient.mediaController.audioDevices().length > 0) {
+    mediaStreamController.audioDeviceId =  VideoClient.mediaController.audioDevices()[0].deviceId;
+  } else {
+    alert("no audio devices available.")
+  }
+  if (VideoClient.mediaController.videoDevices()[0].deviceId > 0) {
+    mediaStreamController.videoDeviceId =
     VideoClient.mediaController.videoDevices()[0].deviceId;
+  } else {
+    alert("no video devices available.")
+  }
+ 
 
   // Request your preview player from the VideoClient.
   const preview = vc.requestPlayer(mediaStreamController);
