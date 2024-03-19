@@ -11,7 +11,7 @@ async function encoder(vc, VideoClient) {
   // Calling methods/setting properties on the HTMLVideoElement itself will cause issues with the video.
   mediaStreamController.audioMuted = false;
   mediaStreamController.videoPaused = false;
-  mediaStreamController.audioDeviceId = null;
+  mediaStreamController.audioDeviceId =  VideoClient.mediaController.audioDevices()[0].deviceId;
   mediaStreamController.videoDeviceId =
     VideoClient.mediaController.videoDevices()[0].deviceId;
 
@@ -39,6 +39,29 @@ async function encoder(vc, VideoClient) {
 
   // Append your newly created video-element with the preview player attached to your document body.
   document.getElementById("videoWrapper").appendChild(video);
+
+  // Select Video Devices
+  function handleVideoDeviceSelect(ev) {
+     mediaStreamController.videoDeviceId = ev.target.value;
+  }
+  const videoDevices = VideoClient.mediaController.videoDevices();
+  const videoDeviceSelect =  document.getElementById("videoDeviceSelect")
+  videoDeviceSelect.onchange = handleVideoDeviceSelect;
+  for(index in videoDevices) {
+    videoDeviceSelect.options[videoDeviceSelect.options.length] = new Option(videoDevices[index].label, videoDevices[index].deviceId);
+  }
+
+   // Select Audio Devices
+   function handleAudioDeviceSelect(ev) {
+    mediaStreamController.audioDeviceId = ev.target.value;
+  }
+  const audioDevices = VideoClient.mediaController.audioDevices();
+  const audioDeviceSelect =  document.getElementById("audioDeviceSelect")
+  audioDeviceSelect.onchange = handleAudioDeviceSelect;
+  for(index in audioDevices) {
+    audioDeviceSelect.options[audioDeviceSelect.options.length] = new Option(audioDevices[index].label, audioDevices[index].deviceId);
+  }
+
 
   // Click handler for hiding/showing the video.
   function handleVideo() {
