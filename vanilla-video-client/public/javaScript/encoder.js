@@ -16,7 +16,7 @@ async function encoder(vc, VideoClient) {
   } else {
     alert("no audio devices available.")
   }
-  if (VideoClient.mediaController.videoDevices()[0].deviceId > 0) {
+  if (VideoClient.mediaController.videoDevices().length > 0) {
     mediaStreamController.videoDeviceId =
     VideoClient.mediaController.videoDevices()[0].deviceId;
   } else {
