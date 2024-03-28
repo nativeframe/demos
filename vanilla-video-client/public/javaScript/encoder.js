@@ -84,7 +84,7 @@ async function encoder(vc, VideoClient) {
     // Styling.
     video.classList.toggle("highlight");
     // Here is where we actually pause/unpause the video.
-    mediaStreamController.videoPaused = !mediaStreamController.videoPaused;
+    mediaStreamController.videoDisabled = !mediaStreamController.videoDisabled;
   }
   // Click handler for muting/unmuting the video.
   function handleMute() {

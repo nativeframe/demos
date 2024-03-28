@@ -57,8 +57,9 @@ export const ManifestPlayer = () => {
     // Check to make sure we have a videoClient, a manifestUrl and a token before we create our player
     if (videoClient != null && playerUi == null && manifestUrl != '' && token != '') {
       
-      // The second argument is the options, for this example we will use the defaults.
-      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, {});
+      // The second argument is the types.PlayerOptions, for this example we'll disable the poster
+      // so that the video turns black when the broadcaster stops, pauses, or turns off their video.
+      const player: types.PlayerAPI = videoClient.requestPlayer(manifestUrl, { displayPoster: false });
       setPlayerUi(new PlayerUiState(player));
 
       // If we dont have a token but we have a manifest url we need to generate a token first,
