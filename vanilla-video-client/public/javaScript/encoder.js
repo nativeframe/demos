@@ -83,13 +83,8 @@ async function encoder(vc, VideoClient) {
     }
     // Styling.
     video.classList.toggle("highlight");
-    // Here is where we actually pause/unpause the video.
-    if (VideoClient.adapter.device.isIosDevice) {
-      mediaStreamController.videoPaused = !mediaStreamController.videoPaused;
-    } else {
-      if (mediaStreamController.videoDisabled === "placeholder") return;
-      mediaStreamController.videoDisabled = !mediaStreamController.videoDisabled;
-    }
+    // Toggles the camera on/off
+    mediaStreamController.toggleCamera;
   }
   // Click handler for muting/unmuting the video.
   function handleMute() {
