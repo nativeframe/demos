@@ -84,7 +84,7 @@ async function encoder(vc, VideoClient) {
     // Styling.
     video.classList.toggle("highlight");
     // Toggles the camera on/off
-    mediaStreamController.toggleCamera;
+    VideoClient.adapter.device.toggleCameraVisibility(mediaStreamController);
   }
   // Click handler for muting/unmuting the video.
   function handleMute() {
