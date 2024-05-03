@@ -1,2 +1,0 @@
-export const backendEndpoint = "https://umbrella.invertred-staging.devspace.lsea3.generflow.com"; // The URL for the environment you plan to stream to.
-export const serviceEndpoint = "http://localhost:3005"; // The URL for the service you run in the concept-api folder.
